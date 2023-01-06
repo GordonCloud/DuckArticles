@@ -1,15 +1,6 @@
 import os
 
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
-
-from .imageStorage import OverwriteStorage
-
-
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (instance.id, ext)
-    return os.path.join('block-images', filename)
 
 
 class Article(models.Model):
@@ -23,18 +14,27 @@ class Article(models.Model):
 
 
 class ArticleBlock(models.Model):
-    article = models.ForeignKey(Article, related_name='%(class)s', on_delete=models.CASCADE)
-    type = models.CharField(max_length=25)
+    article = models.ForeignKey(Article, related_name='%(class)s', on_delete=models.SET_NULL, null=True, blank=True)
+    priority = models.IntegerField(null=True)
 
     class Meta:
         abstract = True
 
 
-class ImageBlock(ArticleBlock):
-    image = models.ImageField(max_length=500, upload_to=get_file_path, storage=OverwriteStorage(), blank=True)
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s_%s.%s" % (instance.type, instance.article, ext)
+    return os.path.join('block-images', filename)
 
-    directory_string_var = 'block-images'
+
+class ImageBlock(ArticleBlock):
+    image = models.ImageField(max_length=500, upload_to=get_file_path, blank=True)
 
 
 class TextBlock(ArticleBlock):
     description = models.TextField(max_length=1000)
+
+
+class TinyMCEBlock(ArticleBlock):
+    content = models.TextField()
+    
