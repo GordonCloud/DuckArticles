@@ -1,17 +1,6 @@
-{% extends "admin/base.html" %}
-{% load static %}
-
-{% block footer %}
-    {{ block.super }}
-    <script src="https://cdn.tiny.cloud/1/4vw9tlw3txb4y56kk8y0hm6o2tclie9ehwuyjumza6a2e12g/tinymce/5/tinymce.min.js"
-            referrerpolicy="origin"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-    <script type="text/javascript" src={% static "js/tinymce-upload.js" %}></script>
-    <script>
-
         tinymce.init({
             selector: '#tinymce_textfield',
-            plugins: 'print preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount imagetools textpattern noneditable help charmap quickbars emoticons blockquote',
+            plugins: 'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount imagetools textpattern noneditable help charmap quickbars emoticons blockquote',
             menubar: 'file edit view insert format tools table tc help',
             toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
             autosave_ask_before_unload: true,
@@ -20,8 +9,7 @@
             autosave_restore_when_empty: false,
             autosave_retention: '2m',
             image_advtab: true,
-            images_upload_url: 'http://127.0.0.1:8000/savetmceimage/',
-            images_upload_handler: tinymce_image_upload_handler,
+            images_upload_url: "http://127.0.0.1:8000/savetmceimage",
             automatic_uploads: true,
             link_list: [
                 {title: 'My page 1', value: 'https://www.tiny.cloud'},
@@ -64,5 +52,3 @@
             mentions_selector: '.mymention',
             mentions_item_type: 'profile'
         });
-    </script>
-{% endblock %}
